@@ -4,7 +4,10 @@ module.exports = (app) => {
 
     router.get("/", users.listUsers)
     router.get("/:_id", users.getUser)
-    router.post("/", users.createUser)
+
+    router.post("/sign-in-user", users.signInUser)
+    router.post("/sign-up-user", users.signUpUser)
+
     router.patch("/:_id", users.updateUser)
     router.delete("/:_id", users.deleteUser)
 

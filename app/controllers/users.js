@@ -9,6 +9,7 @@ exports.listUsers = async (req, res) => {
         return res.json(users)
 
     } catch (error) {
+        console.log(error)
         res.status(500)
     }
 }
@@ -21,28 +22,65 @@ exports.getUser = async (req, res) => {
         return res.json(user)
 
     } catch (error) {
+        console.log(error)
         res.status(500).send("500 - Internal Server Error")
     }
 }
 
-exports.createUser = async (req, res) => {
-    const values = req.body
-    const _id = new mongoose.Types.ObjectId();
-    console.log("Data", values)
-    console.log("Create user")
+exports.signInUser = async (req, res) => {
+    const body = req.body
 
     try {
-        const newUser = new Users({
-            _id: _id,
-            email: values.email
-        })
+        const users = await Users.findOne({ email: body.email })
 
-        await newUser.save()
-
-        return res.status(201).json(newUser)
+        if (users == null) {
+            return res.status(400).json("Incorrect email or password.")
+        }
+        if (body.password == users.password) {
+            return res.json({
+                user_id: users.id,
+                message: "Login Success!"
+            })
+        }
+        else {
+            return res.status(400).json("Incorrect email or password.")
+        }
 
     } catch (error) {
-        res.status(500)
+        console.log(error)
+        res.status(500).send("500 - Internal Server Error")
+    }
+
+}
+
+exports.signUpUser = async (req, res) => {
+    const body = req.body
+    const _id = new mongoose.Types.ObjectId();
+
+    try {
+        const users = await Users.findOne({ email: body.email })
+
+        if (users != null) {
+            return res.status(400).json("Email already exists!")
+        }
+        else if (users == null) {
+            const newUser = new Users({
+                _id: _id,
+                email: body.email,
+                full_name: body.full_name,
+                password: body.password
+            })
+            await newUser.save()
+
+            return res.json({
+                user_id: _id,
+                message: "Registration Success!"
+            })
+        }
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).send("500 - Internal Server Error")
     }
 }
 
