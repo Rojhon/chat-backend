@@ -1,7 +1,7 @@
 #### Simple Chat Application—Front-end
 
 ### Installation
-1. Clone the repo first clone this frontend and  second clone this backend to run then both locally in your devices
+1. Clone the repo To run both locally in your devices, first clone this frontend and then this backend. 
    ```sh
    https://github.com/Rojhon/chat-frontend.git
    ```
