@@ -1,4 +1,4 @@
-#### Simple Chat Application—Front-end
+#### Simple Chat Application—Back-end
 
 ### Installation
 1. Clone the repo To run both locally in your devices, first clone this frontend and then this backend. 
