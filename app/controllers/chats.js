@@ -26,7 +26,12 @@ exports.getConversation = async (req, res) => {
     const _id = req.params.conversation_id
     try {
         const conversation = await Conversations.findOne({ _id: _id })
-            .populate("messages")
+            .populate({
+                path: "messages",
+                populate: {
+                    path: "user_id",
+                }
+            })
             .sort({ updatedAt: -1 })
 
         return res.json(conversation)
@@ -71,21 +76,29 @@ exports.sendMessage = async (req, res) => {
     const messageId = new mongoose.Types.ObjectId();
 
     try {
-        console.log(body)
-        // const messageData = new Messages({
-        //     _id: messageId,
-        //     user_id: body.user_id,
-        //     content: body.content,
-        //     unread: false,
-        // });
-        // await messageData.save();
+        const messageData = new Messages({
+            _id: messageId,
+            user_id: body.user_id,
+            content: body.content,
+            unread: false,
+        });
+        await messageData.save();
 
-        // await Conversations.updateOne(
-        //     { _id: body.conversation_id },
-        //     { $push: { messages: messageData } }
-        // );
+        await Conversations.updateOne(
+            { _id: body.conversation_id },
+            { $push: { messages: messageData } }
+        );
 
-        return res.json("Success");
+        const user = await Users.findOne({ _id: body.user_id })
+        const conversation = await Conversations.findOne({ _id: body.conversation_id })
+
+        messageData.user_id = user
+
+        return res.json({
+            message_data: messageData,
+            message: "Success",
+            participants: conversation.participants
+        })
     } catch (error) {
         return res.json("Error");
     }

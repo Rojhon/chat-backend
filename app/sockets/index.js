@@ -54,5 +54,35 @@ module.exports = (io) => {
 
             console.log("Client connected ", users)
         })
+
+        socket.on("socket:start-conversation", values => {
+            values.participants.map((participantKey, i) => {
+                if (participantKey != values.user_id) {
+                    if (users.hasOwnProperty(participantKey)) {
+                        io.to(users[participantKey].socket_id).emit("socket:receive-conversation", values.user_id)
+                    }
+                }
+            })
+        })
+
+        socket.on("socket:delete-conversation", (participants, userId) => {
+            participants.map((participantKey, i) => {
+                if (participantKey != userId) {
+                    if (users.hasOwnProperty(participantKey)) {
+                        io.to(users[participantKey].socket_id).emit("socket:receive-delete-conversation", userId)
+                    }
+                }
+            })
+        })
+
+        socket.on("socket:send-message", (values) => {
+            values.participants.map((participantKey, i) => {
+                if (participantKey != values.message_data.user_id._id) {
+                    if (users.hasOwnProperty(participantKey)) {
+                        io.to(users[participantKey].socket_id).emit("socket:receive-message", values)
+                    }
+                }
+            })
+        })
     })
 }
