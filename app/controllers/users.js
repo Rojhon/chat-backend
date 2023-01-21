@@ -9,7 +9,6 @@ exports.listUsers = async (req, res) => {
         return res.json(users)
 
     } catch (error) {
-        console.log(error)
         res.status(500)
     }
 }
@@ -22,7 +21,6 @@ exports.getAllUsers = async (req, res) => {
         return res.json(users)
 
     } catch (error) {
-        console.log(error)
         res.status(500)
     }
 }
@@ -36,7 +34,6 @@ exports.getUser = async (req, res) => {
         return res.json(user)
 
     } catch (error) {
-        console.log(error)
         res.status(500).send("500 - Internal Server Error")
     }
 }
@@ -61,7 +58,6 @@ exports.signInUser = async (req, res) => {
         }
 
     } catch (error) {
-        console.log(error)
         res.status(500).send("500 - Internal Server Error")
     }
 
@@ -93,7 +89,6 @@ exports.signUpUser = async (req, res) => {
         }
 
     } catch (error) {
-        console.log(error)
         res.status(500).send("500 - Internal Server Error")
     }
 }
