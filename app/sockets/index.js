@@ -37,6 +37,7 @@ module.exports = (io) => {
             socket.broadcast.emit("socket:user-disconnect", userId)
 
             removeUser(socket.id)
+            io.emit("socket:all-users", users)
         });
 
         socket.on("socket:add-user", userId => {
@@ -44,6 +45,7 @@ module.exports = (io) => {
                 addUser(userId, socket.id)
                 io.to(socket.id).emit("socket:login")
                 socket.broadcast.emit("socket:new-user", userId)
+                io.emit("socket:all-users", users)
             }
             else if (users.hasOwnProperty(userId)) {
                 removeUser(socket.id)

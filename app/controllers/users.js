@@ -14,6 +14,20 @@ exports.listUsers = async (req, res) => {
     }
 }
 
+exports.getAllUsers = async (req, res) => {
+    const _id = req.params._id
+
+    try {
+        const users = await Users.find({ _id: { $ne: _id } })
+        return res.json(users)
+
+    } catch (error) {
+        console.log(error)
+        res.status(500)
+    }
+}
+
+
 exports.getUser = async (req, res) => {
     const _id = req.params._id
 

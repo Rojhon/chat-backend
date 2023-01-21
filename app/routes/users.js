@@ -3,6 +3,7 @@ module.exports = (app) => {
     var router = require("express").Router()
 
     router.get("/", users.listUsers)
+    router.get("/get-all-users/:_id", users.getAllUsers)
     router.get("/:_id", users.getUser)
 
     router.post("/sign-in-user", users.signInUser)
