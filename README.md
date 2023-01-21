@@ -12,7 +12,7 @@
    ```sh
    npm install
    ```
-3. Run the Application for the frontend
+3. Run the Application for the frontend and the backend 
    ```js
    npm start 
    ```
